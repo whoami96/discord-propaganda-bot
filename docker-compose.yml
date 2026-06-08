@@ -1,5 +1,6 @@
 services:
   propaganda-bot:
+    image: pawelowczarczyk/discord-propaganda-bot:latest
     build: .
     container_name: propaganda-bot
     restart: unless-stopped
