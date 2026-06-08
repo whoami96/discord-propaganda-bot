@@ -48,22 +48,22 @@ def generate_schedule(count=3):
 
 def send_to_discord(quote, remaining_today=0):
     """Sends a rich Embed message using the Discord Webhook."""
-    
+
     # Discord Embed structure
     payload = {
         "embeds": [
             {
-                "title": "📢 Historical Propaganda Moment",
-                "description": f"### *\"{quote}\"*",
+                "title": "📢 Czas na odrobinę propagandy!",
+                "description": f'### *"{quote}"*',
                 "color": 15158332,  # Vivid Red
                 "footer": {
                     "text": f"Historical Archive Bot • Quotes remaining today: {remaining_today}"
                 },
-                "timestamp": datetime.utcnow().isoformat()
+                "timestamp": datetime.utcnow().isoformat(),
             }
         ]
     }
-    
+
     try:
         response = requests.post(WEBHOOK_URL, json=payload)
         if response.status_code == 204:
