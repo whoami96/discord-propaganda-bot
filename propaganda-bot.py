@@ -14,7 +14,12 @@ load_dotenv()
 # Configuration
 WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 QUOTES_FILE = "quotes.txt"
-DAILY_DISPATCH_COUNT = 3
+# Load daily dispatch count from environment variable, default to 3
+try:
+    DAILY_DISPATCH_COUNT = int(os.getenv("DAILY_DISPATCH_COUNT", "3"))
+except ValueError:
+    print("WARNING: Invalid DAILY_DISPATCH_COUNT in .env. Defaulting to 3.")
+    DAILY_DISPATCH_COUNT = 3
 
 
 def load_quotes():
@@ -41,11 +46,25 @@ def generate_schedule(count=3):
     return sorted(timestamps)
 
 
-def send_to_discord(quote):
-    """Sends a formatted message using the Discord Webhook."""
-    payload = {"content": f"### ࿖ **Czas na odrobinę propagandy!**\n\n> {quote}"}
+def send_to_discord(quote, remaining_today=0):
+    """Sends a rich Embed message using the Discord Webhook."""
+    
+    # Discord Embed structure
+    payload = {
+        "embeds": [
+            {
+                "title": "📢 Historical Propaganda Moment",
+                "description": f"### *\"{quote}\"*",
+                "color": 15158332,  # Vivid Red
+                "footer": {
+                    "text": f"Historical Archive Bot • Quotes remaining today: {remaining_today}"
+                },
+                "timestamp": datetime.utcnow().isoformat()
+            }
+        ]
+    }
+    
     try:
-        # WEBHOOK_URL is guaranteed to exist here due to check in main()
         response = requests.post(WEBHOOK_URL, json=payload)
         if response.status_code == 204:
             print(f"[{datetime.now().strftime('%H:%M:%S')}] Message sent successfully.")
@@ -53,6 +72,7 @@ def send_to_discord(quote):
             print(
                 f"[{datetime.now().strftime('%H:%M:%S')}] Webhook Error: status {response.status_code}"
             )
+            print(f"Response: {response.text}")
     except Exception as e:
         print(f"[{datetime.now().strftime('%H:%M:%S')}] Connection problem: {e}")
 
@@ -68,7 +88,6 @@ def main():
     if not WEBHOOK_URL:
         print("CRITICAL ERROR: DISCORD_WEBHOOK_URL environment variable not found!")
         print("Ensure you have a .env file with: DISCORD_WEBHOOK_URL=your_url")
-        print("Or set the system variable: export DISCORD_WEBHOOK_URL='your_url'")
         sys.exit(1)
 
     quotes = load_quotes()
@@ -81,10 +100,11 @@ def main():
         print(
             f"[{datetime.now().strftime('%H:%M:%S')}] Manual trigger: sending quote now..."
         )
-        send_to_discord(selected_quote)
+        send_to_discord(selected_quote, remaining_today="N/A (Manual Trigger)")
         sys.exit(0)
 
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Initializing bot...")
+    print(f"Configured daily dispatch count: {DAILY_DISPATCH_COUNT}")
 
     last_reset_date = None
     schedule = []
@@ -102,11 +122,11 @@ def main():
         for scheduled_time in schedule[:]:
             if now >= scheduled_time:
                 selected_quote = random.choice(quotes)
+                schedule.remove(scheduled_time)
                 print(
                     f"[{now.strftime('%H:%M:%S')}] Sending for scheduled time {scheduled_time.strftime('%H:%M:%S')}"
                 )
-                send_to_discord(selected_quote)
-                schedule.remove(scheduled_time)
+                send_to_discord(selected_quote, remaining_today=len(schedule))
 
         time.sleep(30)
 

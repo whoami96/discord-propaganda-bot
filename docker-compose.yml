@@ -7,8 +7,6 @@ services:
     env_file:
       - .env
     environment:
-      # If the variable is in .env, it will be loaded automatically.
-      # You can also override it here directly:
       - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-      # Timezone setting (optional, important for scheduling)
+      - DAILY_DISPATCH_COUNT=${DAILY_DISPATCH_COUNT:-3}
       - TZ=Europe/Warsaw
