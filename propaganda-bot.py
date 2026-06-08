@@ -43,7 +43,7 @@ def generate_schedule(count=3):
 
 def send_to_discord(quote):
     """Sends a formatted message using the Discord Webhook."""
-    payload = {"content": f"### ࿖ **Czas na odrobinę propagandy!**\n\n> {quote}"}
+    payload = {"content": f"### ࿖ **Czas na odrobinę propagandy!**\n\n> {quote}"}
     try:
         # WEBHOOK_URL is guaranteed to exist here due to check in main()
         response = requests.post(WEBHOOK_URL, json=payload)
