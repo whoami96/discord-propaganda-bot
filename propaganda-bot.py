@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 import sys
@@ -42,7 +43,7 @@ def generate_schedule(count=3):
 
 def send_to_discord(quote):
     """Sends a formatted message using the Discord Webhook."""
-    payload = {"content": f"### ࿖ **Czas na odrobinę propagandy!**\n\n> {quote}"}
+    payload = {"content": f"### 📜 **Historical Easter Egg**\n\n> {quote}"}
     try:
         # WEBHOOK_URL is guaranteed to exist here due to check in main()
         response = requests.post(WEBHOOK_URL, json=payload)
@@ -57,6 +58,10 @@ def send_to_discord(quote):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Discord Propaganda Bot")
+    parser.add_argument("--now", action="store_true", help="Send a quote immediately and exit")
+    args = parser.parse_args()
+
     # Strict check for the Webhook URL
     if not WEBHOOK_URL:
         print("CRITICAL ERROR: DISCORD_WEBHOOK_URL environment variable not found!")
@@ -64,12 +69,18 @@ def main():
         print("Or set the system variable: export DISCORD_WEBHOOK_URL='your_url'")
         sys.exit(1)
 
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Initializing bot...")
-
     quotes = load_quotes()
     if not quotes:
         print("CRITICAL ERROR: No quotes to send. Shutting down.")
         sys.exit(1)
+
+    if args.now:
+        selected_quote = random.choice(quotes)
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] Manual trigger: sending quote now...")
+        send_to_discord(selected_quote)
+        sys.exit(0)
+
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Initializing bot...")
 
     last_reset_date = None
     schedule = []
