@@ -1,19 +1,19 @@
-# Wybór lekkiego obrazu bazowego
+# Use a lightweight base image
 FROM python:3.11-slim
 
-# Ustawienie katalogu roboczego
+# Set the working directory
 WORKDIR /app
 
-# Zapobieganie buforowaniu logów Pythona (widoczne natychmiast w docker logs)
+# Prevent Python from buffering logs (visible immediately in docker logs)
 ENV PYTHONUNBUFFERED=1
 
-# Kopiowanie plików zależności i instalacja
+# Copy dependency files and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Kopiowanie reszty plików aplikacji
+# Copy the rest of the application files
 COPY propaganda-bot.py .
 COPY quotes.txt .
 
-# Uruchomienie bota
+# Run the bot
 CMD ["python", "propaganda-bot.py"]

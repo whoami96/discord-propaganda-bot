@@ -7,8 +7,8 @@ services:
     env_file:
       - .env
     environment:
-      # Jeśli zmienna jest w .env, zostanie wczytana automatycznie.
-      # Możesz też nadpisać ją tutaj bezpośrednio:
+      # If the variable is in .env, it will be loaded automatically.
+      # You can also override it here directly:
       - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-      # Ustawienie strefy czasowej (opcjonalne, ważne dla harmonogramu)
+      # Timezone setting (optional, important for scheduling)
       - TZ=Europe/Warsaw
