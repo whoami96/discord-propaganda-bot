@@ -43,7 +43,7 @@ def generate_schedule(count=3):
 
 def send_to_discord(quote):
     """Sends a formatted message using the Discord Webhook."""
-    payload = {"content": f"### 📜 **Historical Easter Egg**\n\n> {quote}"}
+    payload = {"content": f"### ࿖ **Czas na odrobinę propagandy!**\n\n> {quote}"}
     try:
         # WEBHOOK_URL is guaranteed to exist here due to check in main()
         response = requests.post(WEBHOOK_URL, json=payload)
@@ -59,7 +59,9 @@ def send_to_discord(quote):
 
 def main():
     parser = argparse.ArgumentParser(description="Discord Propaganda Bot")
-    parser.add_argument("--now", action="store_true", help="Send a quote immediately and exit")
+    parser.add_argument(
+        "--now", action="store_true", help="Send a quote immediately and exit"
+    )
     args = parser.parse_args()
 
     # Strict check for the Webhook URL
@@ -76,7 +78,9 @@ def main():
 
     if args.now:
         selected_quote = random.choice(quotes)
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] Manual trigger: sending quote now...")
+        print(
+            f"[{datetime.now().strftime('%H:%M:%S')}] Manual trigger: sending quote now..."
+        )
         send_to_discord(selected_quote)
         sys.exit(0)
 
