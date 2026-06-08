@@ -54,8 +54,8 @@ def send_to_discord(quote, remaining_today=0):
         "embeds": [
             {
                 "title": "📢 Czas na odrobinę propagandy!",
-                "description": f'### *"{quote}"*',
-                "color": 15158332,  # Vivid Red
+                "description": f"### *{quote}*",
+                "color": 3447003,  # Soft Blue
                 "footer": {
                     "text": f"Historical Archive Bot • Quotes remaining today: {remaining_today}"
                 },
