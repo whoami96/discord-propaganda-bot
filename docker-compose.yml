@@ -1,0 +1,13 @@
+services:
+  propaganda-bot:
+    build: .
+    container_name: propaganda-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Jeśli zmienna jest w .env, zostanie wczytana automatycznie.
+      # Możesz też nadpisać ją tutaj bezpośrednio:
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      # Ustawienie strefy czasowej (opcjonalne, ważne dla harmonogramu)
+      - TZ=Europe/Warsaw
