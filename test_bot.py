@@ -1,7 +1,4 @@
-from unittest.mock import patch, MagicMock
-import os
-import pytest
-from datetime import datetime
+from unittest.mock import patch
 from propaganda_bot import is_quiet_hour, generate_schedule, load_quotes, send_to_discord
 
 def test_is_quiet_hour_standard_range():
