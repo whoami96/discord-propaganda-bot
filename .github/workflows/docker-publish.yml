@@ -48,4 +48,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: pawelowczarczyk/discord-propaganda-bot:latest
+          tags: wh0ami96/discord-propaganda-bot:latest
