@@ -12,8 +12,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application files
-COPY propaganda-bot.py .
+COPY propaganda_bot.py .
 COPY quotes.txt .
 
 # Run the bot
-CMD ["python", "propaganda-bot.py"]
+CMD ["python", "propaganda_bot.py"]
