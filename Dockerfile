@@ -15,5 +15,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY propaganda_bot.py .
 COPY quotes.txt .
 
+# Create a non-root user and switch to it
+RUN useradd -m botuser && chown -R botuser:botuser /app
+USER botuser
+
 # Run the bot
 CMD ["python", "propaganda_bot.py"]

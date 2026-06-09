@@ -9,4 +9,6 @@ services:
     environment:
       - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
       - DAILY_DISPATCH_COUNT=${DAILY_DISPATCH_COUNT:-3}
+      - QUIET_HOURS_START=${QUIET_HOURS_START:-23}
+      - QUIET_HOURS_END=${QUIET_HOURS_END:-8}
       - TZ=Europe/Warsaw
